@@ -1,3 +1,4 @@
+<h1 id="natGeoUserGreeting"></h1>
 <h1 id="greeting"></h1>
 <p>
 <h1 id="currentKilometersTotal"></h1>
@@ -23,7 +24,11 @@
  [insert_php] global $current_user;
       get_currentuserinfo();
 
-	  echo '<p hidden id="username">' . $current_user->user_login . '</p>';
+      echo '<p hidden id="username">' . $current_user->user_login . '</p>';
+      echo '<p hidden id="firstName">' . $current_user->user_firstname . '</p>';
+      echo '<p hidden id="lastName">' . $current_user->user_lastname . '</p>';
+      echo '<p  hidden id="userEmail">' . $current_user->user_email . '</p>';
+
       echo '<p >Username: ' . $current_user->user_login . "</p>";
       echo '<p>User email: ' . $current_user->user_email . "</p>";
       echo '<p>User level: ' . $current_user->user_level . "</p>";

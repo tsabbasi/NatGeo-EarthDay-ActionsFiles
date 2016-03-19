@@ -1,3 +1,5 @@
+<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+<script type='text/javascript'>
 var myFirebaseRef = new Firebase("https://earth-day-natgeo.firebaseio.com");
 
 var kilometersKey = "kilometers";
@@ -15,15 +17,51 @@ var packetShower;
 var kilometersEntered = "";
 var dataEntered = "";
 var username = document.getElementById("username").innerHTML;
+var firstName = document.getElementById("firstName").innerHTML;
+var lastName = document.getElementById("lastName").innerHTML;
+var userEmail = document.getElementById("userEmail").innerHTML;
+
+// NatGeo Roll User Vars
+var NatGeoUsername = "NatGeoEarthDayRunUser";
+var NatGeoRaceName = "Earth Day Run";
+var NatGeoEmail = "taha@mywebnapp.com";
+
+// Used in calculating the delta before submitting the update to Firebase
+var oldNatGeoKilometerOffset;
+var oldNatGeoLightOffset;
+var oldNatGeoShowerOffset;
+var oldNatGeoMeatlessMealsOffset;
+
+// NatGeo packet information recieved and stored here;
+var packetNatGeoKilometerOffset;
+var packetNatGeoLightOffset;
+var packetNatGeoShowerOffset;
+var packetNatGeoMeatlessMealsOffset;
+
+
+var NatGeoData = myFirebaseRef.child(NatGeoUsername + "/userdata").on("value", function(snapshot) {
+
+
+	if (snapshot.val() == null ) {
+ 		myFirebaseRef.child(NatGeoUsername + '/userdata').set({ email : NatGeoEmail, name : NatGeoRaceName, totalcarbonoffset : "0" });
+ 	} else {
+ 		var oldNatGeoTotalCarbonOffset = snapshot.val().totalcarbonoffset;
+ 		var greeting = document.getElementById("natGeoUserGreeting");
+		greeting.innerHTML = "Earth Day Run Totals" + name + "! <br />Our Total Offset so far is " + oldNatGeoTotalCarbonOffset + " kg";
+ 	}
+
+
+
+});
 
 
 var userData = myFirebaseRef.child(username + "/userdata").on("value", function(snapshot) {
 
 
 	if (snapshot.val() == null ) {
- 		myFirebaseRef.child(username + '/userdata').set({ email : username + "@test.com", name : username, totalcarbonoffset : "0" });
+ 		myFirebaseRef.child(username + '/userdata').set({ email : userEmail, firstName : firstName, lastName : lastName, totalcarbonoffset : "0" });
  	} else {
- 		var name = snapshot.val().name;
+ 		var name = snapshot.val().firstName;
  		var oldTotalCarbonOffset = snapshot.val().totalcarbonoffset;
  		var greeting = document.getElementById("greeting");
 		greeting.innerHTML = "Hello " + name + "! <br />Your Total Offset so far is " + oldTotalCarbonOffset + " kg offset";
@@ -133,7 +171,7 @@ var userData = myFirebaseRef.child(username + "/userdata").on("value", function(
 			myFirebaseRef.child(username + '/greenactions').set({ kilometers : totalDataNumber, lights : packetLights, shower : packetShower, meatlessmeals : packetMeatLessMeals });
 
 			var totalCarbonOffset = totalDataNumber + packetLights + packetShower + packetMeatLessMeals;
-			myFirebaseRef.child(username + '/userdata').set({ email : username + "@test.com", name : username, totalcarbonoffset : totalCarbonOffset });
+			myFirebaseRef.child(username + '/userdata').set({ email : userEmail, firstName : firstName, lastName : lastName, totalcarbonoffset : totalCarbonOffset });
 
 	        break;
 
@@ -155,7 +193,7 @@ var userData = myFirebaseRef.child(username + "/userdata").on("value", function(
 			myFirebaseRef.child(username + '/greenactions').set({ kilometers : packetKilometers, lights : totalDataNumber, shower : packetShower, meatlessmeals : packetMeatLessMeals });
 
 			var totalCarbonOffset = packetKilometers + totalDataNumber + packetShower + packetMeatLessMeals;
-			myFirebaseRef.child(username + '/userdata').set({ email : username + "@test.com", name : username, totalcarbonoffset : totalCarbonOffset });
+			myFirebaseRef.child(username + '/userdata').set({ email : userEmail, firstName : firstName, lastName : lastName, totalcarbonoffset : totalCarbonOffset });
 
 	        break;
 
@@ -177,7 +215,7 @@ var userData = myFirebaseRef.child(username + "/userdata").on("value", function(
 			myFirebaseRef.child(username + '/greenactions').set({ kilometers : packetKilometers, lights : packetLights, shower : totalDataNumber, meatlessmeals : packetMeatLessMeals });
 
 			var totalCarbonOffset = packetKilometers + packetLights + totalDataNumber + packetMeatLessMeals;
-			myFirebaseRef.child(username + '/userdata').set({ email : username + "@test.com", name : username, totalcarbonoffset : totalCarbonOffset });
+			myFirebaseRef.child(username + '/userdata').set({ email : userEmail, firstName : firstName, lastName : lastName, totalcarbonoffset : totalCarbonOffset });
 	        break;
 
         case "meatlessmealsEntered":
@@ -198,7 +236,7 @@ var userData = myFirebaseRef.child(username + "/userdata").on("value", function(
 			myFirebaseRef.child(username + '/greenactions').set({ kilometers : packetKilometers, lights : packetLights, shower : packetShower, meatlessmeals : totalDataNumber });
 
 			var totalCarbonOffset = packetKilometers + packetLights + packetShower + totalDataNumber;
-			myFirebaseRef.child(username + '/userdata').set({ email : username + "@test.com", name : username, totalcarbonoffset : totalCarbonOffset });
+			myFirebaseRef.child(username + '/userdata').set({ email : userEmail, firstName : firstName, lastName : lastName, totalcarbonoffset : totalCarbonOffset });
 	        break;
 
 	    default:
@@ -206,3 +244,4 @@ var userData = myFirebaseRef.child(username + "/userdata").on("value", function(
 	}
 
  }
+</script>
