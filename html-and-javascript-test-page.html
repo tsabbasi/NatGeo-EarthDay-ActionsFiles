@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8">
+   <title></title>
+ </head>
+ <body>
+
+
+<p id="username">
+
+</p>
+
+<p>
+<h1 id="currentKilometersTotal"></h1>
+
+<input type="text" placeholder="Enter kilometers" id="kilometersEntered"/>
+
+<input type="submit" value="Send" id="sendKilometers" />
+</p>
+
+<p>
+<h1 id="currentLightsEntered"></h1>
+
+<input type="text" placeholder="Enter lights" id="lightsEntered"/>
+
+<input type="submit" value="Send" id="sendLights" />
+</p>
+
+<p>
+
+<h1 id="currentShowersEntered"></h1>
+<input type="text" placeholder="Enter shower" id="showersEntered"/>
+
+<input type="submit" value="Send" id="sendShowers" />
+</p>
+<p>
+<h1 id="currentMeatlessmealsEntered"></h1>
+<input type="text" placeholder="Enter Meat Less Meals" id="meatlessmealsEntered"/>
+
+<input type="submit" value="Send" id="sendMeatlessmeals" />
+</p>
+<br />
+ <?php global $current_user;
+      get_currentuserinfo();
+
+      echo '<p>Username: ' . $current_user->user_login . "</p>";
+      echo '<p>User email: ' . $current_user->user_email . "</p>";
+      echo '<p>User level: ' . $current_user->user_level . "</p>";
+      echo '<p>User first name: ' . $current_user->user_firstname . "</p>";
+      echo '<p>User last name: ' . $current_user->user_lastname . "</p>";
+      echo '<p>User display name: ' . $current_user->display_name . "</p>";
+      echo '<p>User ID: ' . $current_user->ID . "\n";
+ ?>
+ <!-- FireBase Install -->
+ <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+ <script> var myFirebaseRef = new Firebase("https://earth-day-natgeo.firebaseio.com");
+
+var kilometersKey = "kilometers";
+var lightsKey = "lights";
+var meatlessmealsKey = "meatlessmeals";
+var showerKey = "shower";
+var oldKilometers = 0;
+var oldLightsEntered = 0;
+var oldShowersEntered = 0;
+var oldMeatlessmealsEntered = 0;
+var packetKilometers;
+var packetLights;
+var packetMeatLessMeals;
+var packetShower;
+var kilometersEntered = "";
+var dataEntered = "";
+
+
+ var greenactions = myFirebaseRef.child("jonsmith/greenactions").on("value", function(snapshot) {
+ 	console.log(snapshot.val());
+
+ 	if (snapshot.val() == null ) {
+ 		packetKilometers = 0;
+ 		packetLights = 0;
+ 		packetMeatLessMeals = 0;
+ 		packetShower = 0;
+ 	} else {
+
+		packetKilometers = snapshot.val().kilometers;
+		if( packetKilometers == null ) {
+
+		packetKilometers = 0;
+		}
+
+
+		packetLights = snapshot.val().lights;
+
+		if( packetLights == null) {
+
+		packetLights = 0;
+		}
+		packetMeatLessMeals = snapshot.val().meatlessmeals;
+
+		if( packetMeatLessMeals == null ) {
+
+		packetMeatLessMeals = 0;
+		}
+		packetShower = snapshot.val().shower;
+
+		if( packetShower == null ) {
+
+		packetShower = 0;
+		}
+
+ 	}
+
+	oldKilometers = document.getElementById("currentKilometersTotal");
+	oldKilometers.innerHTML = packetKilometers + " Kilometers";
+
+	oldLightsEntered = document.getElementById("currentLightsEntered");
+	oldLightsEntered.innerHTML = packetLights + " Lights";
+
+	oldShowersEntered = document.getElementById("currentShowersEntered");
+	oldShowersEntered.innerHTML = packetShower + " Showers";
+
+	oldMeatlessmealsEntered = document.getElementById("currentMeatlessmealsEntered");
+	oldMeatlessmealsEntered.innerHTML = packetMeatLessMeals + " Meat Less Meals";
+
+
+
+});
+
+ document.getElementById('sendKilometers').onclick = function(){
+
+	updateFireBaseData("kilometersEntered");
+ };
+
+ document.getElementById('sendLights').onclick = function(){
+
+ 	updateFireBaseData("lightsEntered");
+
+ };
+
+ document.getElementById('sendShowers').onclick = function(){
+
+ 	updateFireBaseData("showersEntered");
+
+ };
+
+ document.getElementById('sendMeatlessmeals').onclick = function(){
+
+ 	updateFireBaseData("meatlessmealsEntered");
+
+ };
+
+
+ function updateFireBaseData (actionType) {
+
+ 	switch(actionType) {
+	    case "kilometersEntered":
+			dataEntered = document.getElementById(actionType).value;
+
+			var newDataNumberVal = parseInt(dataEntered);
+			var oldDataNumberVal;
+
+			if( oldKilometers.innerHTML !== "" ) {
+
+				oldDataNumberVal = parseInt(oldKilometers.innerHTML);
+			} else {
+				oldDataNumberVal = 0;
+			}
+
+			var totalDataNumber = oldDataNumberVal + newDataNumberVal;
+			var myFirebaseRef = new Firebase("https://earth-day-natgeo.firebaseio.com");
+			myFirebaseRef.child('jonsmith/greenactions').set({ kilometers : totalDataNumber, lights : packetLights, shower : packetShower, meatlessmeals : packetMeatLessMeals });
+	        break;
+
+	    case "lightsEntered":
+			dataEntered = document.getElementById(actionType).value;
+
+			var newDataNumberVal = parseInt(dataEntered);
+			var oldDataNumberVal;
+
+			if( oldLightsEntered.innerHTML !== "" ) {
+
+				oldDataNumberVal = parseInt(oldLightsEntered.innerHTML);
+			} else {
+				oldDataNumberVal = 0;
+			}
+
+			var totalDataNumber = oldDataNumberVal + newDataNumberVal;
+			var myFirebaseRef = new Firebase("https://earth-day-natgeo.firebaseio.com");
+			myFirebaseRef.child('jonsmith/greenactions').set({ kilometers : packetKilometers, lights : totalDataNumber, shower : packetShower, meatlessmeals : packetMeatLessMeals });
+	        break;
+
+        case "showersEntered":
+			dataEntered = document.getElementById(actionType).value;
+
+			var newDataNumberVal = parseInt(dataEntered);
+			var oldDataNumberVal;
+
+			if( oldShowersEntered.innerHTML !== "" ) {
+
+				oldDataNumberVal = parseInt(oldShowersEntered.innerHTML);
+			} else {
+				oldDataNumberVal = 0;
+			}
+
+			var totalDataNumber = oldDataNumberVal + newDataNumberVal;
+			var myFirebaseRef = new Firebase("https://earth-day-natgeo.firebaseio.com");
+			myFirebaseRef.child('jonsmith/greenactions').set({ kilometers : packetKilometers, lights : packetLights, shower : totalDataNumber, meatlessmeals : packetMeatLessMeals });
+	        break;
+
+        case "meatlessmealsEntered":
+			dataEntered = document.getElementById(actionType).value;
+
+			var newDataNumberVal = parseInt(dataEntered);
+			var oldDataNumberVal;
+
+			if( oldMeatlessmealsEntered.innerHTML !== "" ) {
+
+				oldDataNumberVal = parseInt(oldMeatlessmealsEntered.innerHTML);
+			} else {
+				oldDataNumberVal = 0;
+			}
+
+			var totalDataNumber = oldDataNumberVal + newDataNumberVal;
+			var myFirebaseRef = new Firebase("https://earth-day-natgeo.firebaseio.com");
+			myFirebaseRef.child('jonsmith/greenactions').set({ kilometers : packetKilometers, lights : packetLights, shower : packetShower, meatlessmeals : totalDataNumber });
+	        break;
+
+	    default:
+	        break;
+	}
+
+ }
+ </script>
+ </body>
+</html>

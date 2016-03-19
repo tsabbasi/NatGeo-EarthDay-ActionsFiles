@@ -1,0 +1,33 @@
+<h1 id="greeting"></h1>
+<p>
+<h1 id="currentKilometersTotal"></h1>
+<input type="text" placeholder="Enter kilometers" id="kilometersEntered"/>
+<input type="submit" value="Send" id="sendKilometers" />
+</p>
+<p>
+<h1 id="currentLightsEntered"></h1>
+<input type="text" placeholder="Enter lights" id="lightsEntered"/>
+<input type="submit" value="Send" id="sendLights" />
+</p>
+<p>
+<h1 id="currentShowersEntered"></h1>
+<input type="text" placeholder="Enter shower" id="showersEntered"/>
+<input type="submit" value="Send" id="sendShowers" />
+</p>
+<p>
+<h1 id="currentMeatlessmealsEntered"></h1>
+<input type="text" placeholder="Enter Meat Less Meals" id="meatlessmealsEntered"/>
+<input type="submit" value="Send" id="sendMeatlessmeals" />
+</p>
+<br />
+ [insert_php] global $current_user;
+      get_currentuserinfo();
+
+      echo '<p>Username: ' . $current_user->user_login . "</p>";
+      echo '<p>User email: ' . $current_user->user_email . "</p>";
+      echo '<p>User level: ' . $current_user->user_level . "</p>";
+      echo '<p>User first name: ' . $current_user->user_firstname . "</p>";
+      echo '<p>User last name: ' . $current_user->user_lastname . "</p>";
+      echo '<p>User display name: ' . $current_user->display_name . "</p>";
+      echo '<p>User ID: ' . $current_user->ID . "n";
+ [/insert_php]
