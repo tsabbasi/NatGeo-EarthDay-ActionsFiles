@@ -14,7 +14,7 @@ var packetMeatLessMeals;
 var packetShower;
 var kilometersEntered = "";
 var dataEntered = "";
-var username = "tarzan";
+var username = document.getElementById("username").innerHTML;
 
 
 var userData = myFirebaseRef.child(username + "/userdata").on("value", function(snapshot) {

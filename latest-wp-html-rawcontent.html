@@ -23,7 +23,8 @@
  [insert_php] global $current_user;
       get_currentuserinfo();
 
-      echo '<p>Username: ' . $current_user->user_login . "</p>";
+	  echo '<p hidden id="username">' . $current_user->user_login . '</p>';
+      echo '<p >Username: ' . $current_user->user_login . "</p>";
       echo '<p>User email: ' . $current_user->user_email . "</p>";
       echo '<p>User level: ' . $current_user->user_level . "</p>";
       echo '<p>User first name: ' . $current_user->user_firstname . "</p>";
